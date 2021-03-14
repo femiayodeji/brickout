@@ -138,7 +138,7 @@ function () {
     _classCallCheck(this, Paddle);
 
     this.width = 150;
-    this.height = 30;
+    this.height = 20;
     this.position = {
       x: gameWidth / 2 - this.width / 2,
       y: gameHeight - this.height - 10
@@ -148,6 +148,7 @@ function () {
   _createClass(Paddle, [{
     key: "draw",
     value: function draw(context) {
+      context.fillStyle = "#0f0";
       context.fillRect(this.position.x, this.position.y, this.width, this.height);
     }
   }]);
