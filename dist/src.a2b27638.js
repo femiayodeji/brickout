@@ -160,7 +160,6 @@ function () {
   }, {
     key: "update",
     value: function update(deltaTime) {
-      if (!deltaTime) return;
       this.position.x += this.speed;
       if (this.position.x < 0) this.position.x = 0;
       if (this.position.x + this.width > this.gameScale.gameWidth) this.position.x = this.gameScale.gameWidth - this.width;
@@ -236,20 +235,43 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 var Ball =
 /*#__PURE__*/
 function () {
-  function Ball() {
+  function Ball(gameWidth, gameHeight) {
     _classCallCheck(this, Ball);
 
+    this.gameScale = {
+      gameWidth: gameWidth,
+      gameHeight: gameHeight
+    };
     this.image = document.getElementById("img-ball");
+    this.position = {
+      x: 10,
+      y: 10
+    };
+    this.speed = {
+      x: 4,
+      y: 2
+    };
+    this.size = 24;
   }
 
   _createClass(Ball, [{
     key: "draw",
     value: function draw(context) {
-      context.drawImage(this.image, 10, 10, 24, 24);
+      context.drawImage(this.image, this.position.x, this.position.y, this.size, this.size);
     }
   }, {
     key: "update",
-    value: function update() {// todo
+    value: function update(deltaTime) {
+      this.position.x += this.speed.x;
+      this.position.y += this.speed.y;
+
+      if (this.position.x + this.size > this.gameScale.gameWidth || this.position.x < 0) {
+        this.speed.x = -this.speed.x;
+      }
+
+      if (this.position.y + this.size > this.gameScale.gameHeight || this.position.y < 0) {
+        this.speed.y = -this.speed.y;
+      }
     }
   }]);
 
@@ -274,7 +296,7 @@ var GAME_WIDTH = 800;
 var GAME_HEIGHT = 600;
 context.clearRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
 var paddle = new _paddle.default(GAME_WIDTH, GAME_HEIGHT);
-var ball = new _ball.default();
+var ball = new _ball.default(GAME_WIDTH, GAME_HEIGHT);
 new _input.default(paddle);
 var lastTime = 0;
 
@@ -284,11 +306,12 @@ function gameLoop(timestamp) {
   context.clearRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
   paddle.update(deltaTime);
   paddle.draw(context);
+  ball.update(deltaTime);
   ball.draw(context);
   requestAnimationFrame(gameLoop);
 }
 
-gameLoop();
+requestAnimationFrame(gameLoop);
 },{"/src/paddle":"src/paddle.js","/src/input":"src/input.js","/src/ball":"src/ball.js"}],"../../../Users/HP/AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';

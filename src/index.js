@@ -11,7 +11,7 @@ const GAME_HEIGHT = 600;
 context.clearRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
 
 let paddle = new Paddle(GAME_WIDTH, GAME_HEIGHT);
-let ball = new Ball();
+let ball = new Ball(GAME_WIDTH, GAME_HEIGHT);
 
 new InputHandler(paddle);
 
@@ -26,10 +26,11 @@ function gameLoop(timestamp){
     paddle.update(deltaTime);
     paddle.draw(context);
 
+    ball.update(deltaTime);
     ball.draw(context);
 
 
     requestAnimationFrame(gameLoop);
 }
 
-gameLoop();
+requestAnimationFrame(gameLoop);
