@@ -1,6 +1,8 @@
 export default class Paddle{
-    constructor(gameWidth, gameHeight){
-        this.gameScale = { gameWidth, gameHeight };
+    constructor(game){
+        this.gameWidth = game.gameWidth;
+        this.gameHeight = game.gameHeight;
+
         this.width = 150;
         this.height = 20;
 
@@ -8,8 +10,8 @@ export default class Paddle{
         this.speed = 0;
 
         this.position = {
-            x: gameWidth / 2 - this.width / 2,
-            y: gameHeight - this.height - 10
+            x: this.gameWidth / 2 - this.width / 2,
+            y: this.gameHeight - this.height - 10
         };
     }
 
@@ -24,8 +26,8 @@ export default class Paddle{
          if(this.position.x < 0) 
             this.position.x = 0;
 
-         if(this.position.x + this.width > this.gameScale.gameWidth) 
-            this.position.x = this.gameScale.gameWidth - this.width;
+         if(this.position.x + this.width > this.gameWidth) 
+            this.position.x = this.gameWidth - this.width;
     }
 
     move(keyCode){

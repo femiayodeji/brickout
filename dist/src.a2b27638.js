@@ -134,20 +134,18 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 var Paddle =
 /*#__PURE__*/
 function () {
-  function Paddle(gameWidth, gameHeight) {
+  function Paddle(game) {
     _classCallCheck(this, Paddle);
 
-    this.gameScale = {
-      gameWidth: gameWidth,
-      gameHeight: gameHeight
-    };
+    this.gameWidth = game.gameWidth;
+    this.gameHeight = game.gameHeight;
     this.width = 150;
     this.height = 20;
     this.maxSpeed = 7;
     this.speed = 0;
     this.position = {
-      x: gameWidth / 2 - this.width / 2,
-      y: gameHeight - this.height - 10
+      x: this.gameWidth / 2 - this.width / 2,
+      y: this.gameHeight - this.height - 10
     };
   }
 
@@ -162,7 +160,7 @@ function () {
     value: function update(deltaTime) {
       this.position.x += this.speed;
       if (this.position.x < 0) this.position.x = 0;
-      if (this.position.x + this.width > this.gameScale.gameWidth) this.position.x = this.gameScale.gameWidth - this.width;
+      if (this.position.x + this.width > this.gameWidth) this.position.x = this.gameWidth - this.width;
     }
   }, {
     key: "move",
@@ -235,13 +233,11 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 var Ball =
 /*#__PURE__*/
 function () {
-  function Ball(gameWidth, gameHeight) {
+  function Ball(game) {
     _classCallCheck(this, Ball);
 
-    this.gameScale = {
-      gameWidth: gameWidth,
-      gameHeight: gameHeight
-    };
+    this.gameWidth = game.gameWidth;
+    this.gameHeight = game.gameHeight;
     this.image = document.getElementById("img-ball");
     this.position = {
       x: 10,
@@ -265,11 +261,11 @@ function () {
       this.position.x += this.speed.x;
       this.position.y += this.speed.y;
 
-      if (this.position.x + this.size > this.gameScale.gameWidth || this.position.x < 0) {
+      if (this.position.x + this.size > this.gameWidth || this.position.x < 0) {
         this.speed.x = -this.speed.x;
       }
 
-      if (this.position.y + this.size > this.gameScale.gameHeight || this.position.y < 0) {
+      if (this.position.y + this.size > this.gameHeight || this.position.y < 0) {
         this.speed.y = -this.speed.y;
       }
     }
@@ -279,8 +275,13 @@ function () {
 }();
 
 exports.default = Ball;
-},{}],"src/index.js":[function(require,module,exports) {
+},{}],"src/game.js":[function(require,module,exports) {
 "use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
 
 var _paddle = _interopRequireDefault(require("/src/paddle"));
 
@@ -290,29 +291,76 @@ var _ball = _interopRequireDefault(require("/src/ball"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var Game =
+/*#__PURE__*/
+function () {
+  function Game(gameWidth, gameHeight) {
+    _classCallCheck(this, Game);
+
+    this.gameWidth = gameWidth;
+    this.gameHeight = gameHeight;
+  }
+
+  _createClass(Game, [{
+    key: "start",
+    value: function start() {
+      this.paddle = new _paddle.default(this);
+      this.ball = new _ball.default(this);
+      this.gameObjects = [this.ball, this.paddle];
+      new _input.default(this.paddle);
+    }
+  }, {
+    key: "update",
+    value: function update(deltaTime) {
+      this.gameObjects.forEach(function (object) {
+        object.update(deltaTime);
+      });
+    }
+  }, {
+    key: "draw",
+    value: function draw(context) {
+      this.gameObjects.forEach(function (object) {
+        object.draw(context);
+      });
+    }
+  }]);
+
+  return Game;
+}();
+
+exports.default = Game;
+},{"/src/paddle":"src/paddle.js","/src/input":"src/input.js","/src/ball":"src/ball.js"}],"src/index.js":[function(require,module,exports) {
+"use strict";
+
+var _game = _interopRequireDefault(require("/src/game"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 var canvas = document.getElementById("game-screen");
 var context = canvas.getContext("2d");
 var GAME_WIDTH = 800;
 var GAME_HEIGHT = 600;
-context.clearRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
-var paddle = new _paddle.default(GAME_WIDTH, GAME_HEIGHT);
-var ball = new _ball.default(GAME_WIDTH, GAME_HEIGHT);
-new _input.default(paddle);
+var game = new _game.default(GAME_WIDTH, GAME_HEIGHT);
+game.start();
 var lastTime = 0;
 
 function gameLoop(timestamp) {
   var deltaTime = timestamp - lastTime;
   lastTime = timestamp;
   context.clearRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
-  paddle.update(deltaTime);
-  paddle.draw(context);
-  ball.update(deltaTime);
-  ball.draw(context);
+  game.update(deltaTime);
+  game.draw(context);
   requestAnimationFrame(gameLoop);
 }
 
 requestAnimationFrame(gameLoop);
-},{"/src/paddle":"src/paddle.js","/src/input":"src/input.js","/src/ball":"src/ball.js"}],"../../../Users/HP/AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"/src/game":"src/game.js"}],"../../../Users/HP/AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
