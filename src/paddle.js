@@ -31,7 +31,7 @@ export default class Paddle{
     }
 
     move(keyCode){
-        switch(event.keyCode){
+        switch(keyCode){
             case 37:
                 this.speed = -this.maxSpeed;
                 break;
@@ -40,5 +40,18 @@ export default class Paddle{
                 break;                
         }
 
+    }
+
+    stop(keyCode){        
+        switch(keyCode){
+            case 37:
+                if(this.speed < 0)
+                    this.speed = 0;
+                break;
+            case 39:
+                if(this.speed > 0)
+                    this.speed = 0;
+                break;                
+        }        
     }
 }
