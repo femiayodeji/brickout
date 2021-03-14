@@ -235,6 +235,7 @@ var GAME_HEIGHT = 600;
 context.clearRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
 var paddle = new _paddle.default(GAME_WIDTH, GAME_HEIGHT);
 paddle.draw(context);
+var ball = document.getElementById("img-ball");
 new _input.default(paddle);
 var lastTime = 0;
 
@@ -244,6 +245,7 @@ function gameLoop(timestamp) {
   context.clearRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
   paddle.update(deltaTime);
   paddle.draw(context);
+  context.drawImage(ball, 10, 10, 24, 24);
   requestAnimationFrame(gameLoop);
 }
 
@@ -276,7 +278,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "5013" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "5419" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
