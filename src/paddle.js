@@ -1,7 +1,11 @@
 export default class Paddle{
     constructor(gameWidth, gameHeight){
+        this.gameScale = { gameWidth, gameHeight };
         this.width = 150;
         this.height = 20;
+
+        this.maxSpeed = 7;
+        this.speed = 0;
 
         this.position = {
             x: gameWidth / 2 - this.width / 2,
@@ -16,5 +20,25 @@ export default class Paddle{
 
     update(deltaTime){
         if(!deltaTime) return;
+
+        this.position.x += this.speed;
+
+         if(this.position.x < 0) 
+            this.position.x = 0;
+
+         if(this.position.x + this.width > this.gameScale.gameWidth) 
+            this.position.x = this.gameScale.gameWidth - this.width;
+    }
+
+    move(keyCode){
+        switch(event.keyCode){
+            case 37:
+                this.speed = -this.maxSpeed;
+                break;
+            case 39:
+                this.speed = this.maxSpeed;
+                break;                
+        }
+
     }
 }

@@ -137,8 +137,14 @@ function () {
   function Paddle(gameWidth, gameHeight) {
     _classCallCheck(this, Paddle);
 
+    this.gameScale = {
+      gameWidth: gameWidth,
+      gameHeight: gameHeight
+    };
     this.width = 150;
     this.height = 20;
+    this.maxSpeed = 7;
+    this.speed = 0;
     this.position = {
       x: gameWidth / 2 - this.width / 2,
       y: gameHeight - this.height - 10
@@ -155,6 +161,22 @@ function () {
     key: "update",
     value: function update(deltaTime) {
       if (!deltaTime) return;
+      this.position.x += this.speed;
+      if (this.position.x < 0) this.position.x = 0;
+      if (this.position.x + this.width > this.gameScale.gameWidth) this.position.x = this.gameScale.gameWidth - this.width;
+    }
+  }, {
+    key: "move",
+    value: function move(keyCode) {
+      switch (event.keyCode) {
+        case 37:
+          this.speed = -this.maxSpeed;
+          break;
+
+        case 39:
+          this.speed = this.maxSpeed;
+          break;
+      }
     }
   }]);
 
@@ -176,15 +198,7 @@ var InputHandler = function InputHandler(paddle) {
   _classCallCheck(this, InputHandler);
 
   document.addEventListener("keydown", function (event) {
-    switch (event.keyCode) {
-      case 37:
-        alert("left");
-        break;
-
-      case 39:
-        alert("right");
-        break;
-    }
+    paddle.move(event.keyCode);
   });
 };
 
