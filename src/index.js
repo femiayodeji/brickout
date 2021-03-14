@@ -10,3 +10,19 @@ context.clearRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
 
 let paddle = new Paddle(GAME_WIDTH, GAME_HEIGHT);
 paddle.draw(context);
+
+let lastTime = 0;
+
+function gameLoop(timestamp){
+    let deltaTime = timestamp - lastTime;
+    lastTime = timestamp;
+
+    context.clearRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
+
+    paddle.update(deltaTime);
+    paddle.draw(context);
+
+    requestAnimationFrame(gameLoop);
+}
+
+gameLoop();

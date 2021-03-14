@@ -151,6 +151,12 @@ function () {
       context.fillStyle = "#0f0";
       context.fillRect(this.position.x, this.position.y, this.width, this.height);
     }
+  }, {
+    key: "update",
+    value: function update(deltaTime) {
+      if (!deltaTime) return;
+      this.position.x += 5 / deltaTime;
+    }
   }]);
 
   return Paddle;
@@ -171,6 +177,18 @@ var GAME_HEIGHT = 600;
 context.clearRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
 var paddle = new _paddle.default(GAME_WIDTH, GAME_HEIGHT);
 paddle.draw(context);
+var lastTime = 0;
+
+function gameLoop(timestamp) {
+  var deltaTime = timestamp - lastTime;
+  lastTime = timestamp;
+  context.clearRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
+  paddle.update(deltaTime);
+  paddle.draw(context);
+  requestAnimationFrame(gameLoop);
+}
+
+gameLoop();
 },{"/src/paddle":"src/paddle.js"}],"../../../Users/HP/AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
