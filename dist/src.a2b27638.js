@@ -238,6 +238,7 @@ function () {
 
     this.gameWidth = game.gameWidth;
     this.gameHeight = game.gameHeight;
+    this.game = game;
     this.image = document.getElementById("img-ball");
     this.position = {
       x: 10,
@@ -267,6 +268,16 @@ function () {
 
       if (this.position.y + this.size > this.gameHeight || this.position.y < 0) {
         this.speed.y = -this.speed.y;
+      }
+
+      var ballBottom = this.position.y + this.size;
+      var paddleTop = this.game.paddle.position.y;
+      var paddleLeft = this.game.paddle.position.x;
+      var paddleRight = this.game.paddle.position.x + this.game.paddle.width;
+
+      if (ballBottom >= paddleTop && this.position.x >= paddleLeft && this.position.x + this.size <= paddleRight) {
+        this.speed.y = -this.speed.y;
+        this.position.y = this.game.paddle.position.y - this.size;
       }
     }
   }]);
