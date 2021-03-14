@@ -1,4 +1,4 @@
-class Paddle{
+export default class Paddle{
     constructor(gameWidth, gameHeight){
         this.width = 150;
         this.height = 30;
@@ -13,5 +13,3 @@ class Paddle{
         context.fillRect(this.position.x, this.position.y, this.width, this.height);
     }
 }
-
-export default Paddle;
