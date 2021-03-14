@@ -155,7 +155,6 @@ function () {
     key: "update",
     value: function update(deltaTime) {
       if (!deltaTime) return;
-      this.position.x += 5 / deltaTime;
     }
   }]);
 
@@ -163,10 +162,39 @@ function () {
 }();
 
 exports.default = Paddle;
+},{}],"src/input.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var InputHandler = function InputHandler(paddle) {
+  _classCallCheck(this, InputHandler);
+
+  document.addEventListener("keydown", function (event) {
+    switch (event.keyCode) {
+      case 37:
+        alert("left");
+        break;
+
+      case 39:
+        alert("right");
+        break;
+    }
+  });
+};
+
+exports.default = InputHandler;
 },{}],"src/index.js":[function(require,module,exports) {
 "use strict";
 
 var _paddle = _interopRequireDefault(require("/src/paddle"));
+
+var _input = _interopRequireDefault(require("/src/input"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -177,6 +205,7 @@ var GAME_HEIGHT = 600;
 context.clearRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
 var paddle = new _paddle.default(GAME_WIDTH, GAME_HEIGHT);
 paddle.draw(context);
+new _input.default(paddle);
 var lastTime = 0;
 
 function gameLoop(timestamp) {
@@ -189,7 +218,7 @@ function gameLoop(timestamp) {
 }
 
 gameLoop();
-},{"/src/paddle":"src/paddle.js"}],"../../../Users/HP/AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"/src/paddle":"src/paddle.js","/src/input":"src/input.js"}],"../../../Users/HP/AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
