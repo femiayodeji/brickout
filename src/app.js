@@ -1,1 +1,4 @@
-document.body.style.background = "#f80000";
+let canvas = document.getElementById("game-screen");
+let context = canvas.getContext("2d");
+
+context.clearRect(0, 0, 800, 600);
