@@ -1,5 +1,5 @@
 {
-  "name": "ping_pong",
+  "name": "brickout",
   "version": "1.0.0",
   "description": "A web game build with JavaScript, HTML5 and CSS.",
   "main": "src/index.js",
@@ -11,7 +11,7 @@
   "author": "Femi Ayodeji <femidotayodeji@gmail.com>",
   "license": "MIT",
   "devDependencies": {
-    "parcel": "^2.0.0-beta.1"
+    "parcel": "^1.12.3"
   },
   "dependencies": {}
 }
