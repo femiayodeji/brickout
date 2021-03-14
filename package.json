@@ -13,5 +13,7 @@
   "devDependencies": {
     "parcel": "^1.12.3"
   },
-  "dependencies": {}
+  "dependencies": {
+    "src": "^1.1.2"
+  }
 }

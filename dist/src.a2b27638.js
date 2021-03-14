@@ -219,12 +219,52 @@ var InputHandler = function InputHandler(paddle) {
 };
 
 exports.default = InputHandler;
+},{}],"src/ball.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var Ball =
+/*#__PURE__*/
+function () {
+  function Ball() {
+    _classCallCheck(this, Ball);
+
+    this.image = document.getElementById("img-ball");
+  }
+
+  _createClass(Ball, [{
+    key: "draw",
+    value: function draw(context) {
+      context.drawImage(this.image, 10, 10, 24, 24);
+    }
+  }, {
+    key: "update",
+    value: function update() {// todo
+    }
+  }]);
+
+  return Ball;
+}();
+
+exports.default = Ball;
 },{}],"src/index.js":[function(require,module,exports) {
 "use strict";
 
 var _paddle = _interopRequireDefault(require("/src/paddle"));
 
 var _input = _interopRequireDefault(require("/src/input"));
+
+var _ball = _interopRequireDefault(require("/src/ball"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -234,8 +274,7 @@ var GAME_WIDTH = 800;
 var GAME_HEIGHT = 600;
 context.clearRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
 var paddle = new _paddle.default(GAME_WIDTH, GAME_HEIGHT);
-paddle.draw(context);
-var ball = document.getElementById("img-ball");
+var ball = new _ball.default();
 new _input.default(paddle);
 var lastTime = 0;
 
@@ -245,12 +284,12 @@ function gameLoop(timestamp) {
   context.clearRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
   paddle.update(deltaTime);
   paddle.draw(context);
-  context.drawImage(ball, 10, 10, 24, 24);
+  ball.draw(context);
   requestAnimationFrame(gameLoop);
 }
 
 gameLoop();
-},{"/src/paddle":"src/paddle.js","/src/input":"src/input.js"}],"../../../Users/HP/AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"/src/paddle":"src/paddle.js","/src/input":"src/input.js","/src/ball":"src/ball.js"}],"../../../Users/HP/AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
