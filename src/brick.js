@@ -13,6 +13,8 @@ export default class Brick{
 
         this.width = 60;
         this.height = 32;
+
+        this.destroy = false;
     }
 
     draw(context){
@@ -28,6 +30,7 @@ export default class Brick{
     update(deltaTime){       
         if(detectCollision(this.game.ball, this)){
             this.game.ball.speed.y = -this.game.ball.speed.y;
+            this.destroy = true;
         } 
     }
 }

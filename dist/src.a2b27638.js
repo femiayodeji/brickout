@@ -339,6 +339,7 @@ function () {
     this.position = position;
     this.width = 60;
     this.height = 32;
+    this.destroy = false;
   }
 
   _createClass(Brick, [{
@@ -351,6 +352,7 @@ function () {
     value: function update(deltaTime) {
       if ((0, _collisionDetection.detectCollision)(this.game.ball, this)) {
         this.game.ball.speed.y = -this.game.ball.speed.y;
+        this.destroy = true;
       }
     }
   }]);
@@ -450,6 +452,9 @@ function () {
     value: function update(deltaTime) {
       this.gameObjects.forEach(function (object) {
         object.update(deltaTime);
+      });
+      this.gameObjects = this.gameObjects.filter(function (object) {
+        return !object.destroy;
       });
     }
   }, {
