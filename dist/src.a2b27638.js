@@ -204,14 +204,20 @@ exports.default = void 0;
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var InputHandler = function InputHandler(paddle) {
+var InputHandler = function InputHandler(game) {
   _classCallCheck(this, InputHandler);
 
   document.addEventListener("keydown", function (event) {
-    paddle.move(event.keyCode);
+    game.paddle.move(event.keyCode);
+
+    switch (event.keyCode) {
+      case 27:
+        game.togglePause();
+        break;
+    }
   });
   document.addEventListener("keyup", function (event) {
-    paddle.stop(event.keyCode);
+    game.paddle.stop(event.keyCode);
   });
 };
 
@@ -428,6 +434,11 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
+var GAMESTATE = {
+  PAUSED: 0,
+  RUNNING: 1
+};
+
 var Game =
 /*#__PURE__*/
 function () {
@@ -441,15 +452,17 @@ function () {
   _createClass(Game, [{
     key: "start",
     value: function start() {
+      this.gameState = GAMESTATE.RUNNING;
       this.paddle = new _paddle.default(this);
       this.ball = new _ball.default(this);
       var bricks = (0, _levels.buildLevel)(this, _levels.level1);
       this.gameObjects = [this.ball, this.paddle].concat(_toConsumableArray(bricks));
-      new _input.default(this.paddle);
+      new _input.default(this);
     }
   }, {
     key: "update",
     value: function update(deltaTime) {
+      if (this.gameState != GAMESTATE.RUNNING) return;
       this.gameObjects.forEach(function (object) {
         object.update(deltaTime);
       });
@@ -463,6 +476,30 @@ function () {
       this.gameObjects.forEach(function (object) {
         object.draw(context);
       });
+
+      if (this.gameState == GAMESTATE.PAUSED) {
+        this.pausedScreen(context);
+      }
+    }
+  }, {
+    key: "togglePause",
+    value: function togglePause() {
+      if (this.gameState == GAMESTATE.PAUSED) {
+        this.gameState = GAMESTATE.RUNNING;
+      } else {
+        this.gameState = GAMESTATE.PAUSED;
+      }
+    }
+  }, {
+    key: "pausedScreen",
+    value: function pausedScreen(context) {
+      context.rect(0, 0, this.gameWidth, this.gameHeight);
+      context.fillStyle = "rgba(0, 0, 0, 0.5)";
+      context.fill();
+      context.font = "30px Arial";
+      context.fillStyle = "#ffffff";
+      context.textAlign = "center";
+      context.fillText("Paused", this.gameWidth / 2, this.gameHeight / 2);
     }
   }]);
 

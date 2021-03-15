@@ -3,6 +3,11 @@ import InputHandler from '/src/input';
 import Ball from '/src/ball';
 import { buildLevel, level1} from '/src/levels'
 
+const GAMESTATE = {
+    PAUSED: 0,
+    RUNNING: 1
+}
+
 export default class Game{
     constructor(gameWidth, gameHeight){
         this.gameWidth = gameWidth;
@@ -10,6 +15,7 @@ export default class Game{
     }
 
     start(){
+        this.gameState = GAMESTATE.RUNNING;
         this.paddle = new Paddle(this);
         this.ball = new Ball(this);
 
@@ -17,10 +23,12 @@ export default class Game{
 
         this.gameObjects = [this.ball, this.paddle, ...bricks];
 
-        new InputHandler(this.paddle);        
+        new InputHandler(this);        
     }
 
     update(deltaTime){
+        if(this.gameState != GAMESTATE.RUNNING) return;
+
         this.gameObjects.forEach((object) => {
             object.update(deltaTime)
         });
@@ -33,5 +41,29 @@ export default class Game{
         this.gameObjects.forEach((object) => {
             object.draw(context)
         });
+
+        if(this.gameState == GAMESTATE.PAUSED){
+            this.pausedScreen(context);
+        }
+    }
+
+    togglePause(){
+        if(this.gameState == GAMESTATE.PAUSED){
+            this.gameState = GAMESTATE.RUNNING;
+        }
+        else{
+            this.gameState = GAMESTATE.PAUSED;
+        }
+    }
+
+    pausedScreen(context){
+        context.rect(0, 0, this.gameWidth, this.gameHeight);
+        context.fillStyle = "rgba(0, 0, 0, 0.5)";
+        context.fill();
+
+        context.font = "30px Arial";
+        context.fillStyle = "#ffffff";
+        context.textAlign = "center";
+        context.fillText("Paused", this.gameWidth / 2, this.gameHeight / 2);
     }
 }
