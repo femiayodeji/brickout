@@ -216,6 +216,28 @@ var InputHandler = function InputHandler(paddle) {
 };
 
 exports.default = InputHandler;
+},{}],"src/collisionDetection.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.detectCollision = detectCollision;
+
+function detectCollision(ball, gameObject) {
+  var ballTop = ball.position.y;
+  var ballBottom = ball.position.y + ball.size;
+  var objectTop = gameObject.position.y;
+  var objectBottom = gameObject.position.y + gameObject.height;
+  var objectLeft = gameObject.position.x;
+  var objectRight = gameObject.position.x + gameObject.width;
+
+  if (ballTop <= objectBottom && ballBottom >= objectTop && ball.position.x >= objectLeft && ball.position.x + ball.size <= objectRight) {
+    return true;
+  } else {
+    return false;
+  }
+}
 },{}],"src/ball.js":[function(require,module,exports) {
 "use strict";
 
@@ -223,6 +245,8 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = void 0;
+
+var _collisionDetection = require("/src/collisionDetection");
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -275,7 +299,7 @@ function () {
       var paddleLeft = this.game.paddle.position.x;
       var paddleRight = this.game.paddle.position.x + this.game.paddle.width;
 
-      if (ballBottom >= paddleTop && this.position.x >= paddleLeft && this.position.x + this.size <= paddleRight) {
+      if ((0, _collisionDetection.detectCollision)(this, this.game.paddle)) {
         this.speed.y = -this.speed.y;
         this.position.y = this.game.paddle.position.y - this.size;
       }
@@ -286,7 +310,7 @@ function () {
 }();
 
 exports.default = Ball;
-},{}],"src/brick.js":[function(require,module,exports) {
+},{"/src/collisionDetection":"src/collisionDetection.js"}],"src/brick.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
