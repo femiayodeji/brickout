@@ -286,6 +286,49 @@ function () {
 }();
 
 exports.default = Ball;
+},{}],"src/brick.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var Brick =
+/*#__PURE__*/
+function () {
+  function Brick(game, position) {
+    _classCallCheck(this, Brick);
+
+    this.gameWidth = game.gameWidth;
+    this.gameHeight = game.gameHeight;
+    this.game = game;
+    this.image = document.getElementById("img-brick");
+    this.position = position;
+    this.width = 64;
+    this.height = 32;
+  }
+
+  _createClass(Brick, [{
+    key: "draw",
+    value: function draw(context) {
+      context.drawImage(this.image, this.position.x, this.position.y, this.width, this.height);
+    }
+  }, {
+    key: "update",
+    value: function update(deltaTime) {}
+  }]);
+
+  return Brick;
+}();
+
+exports.default = Brick;
 },{}],"src/game.js":[function(require,module,exports) {
 "use strict";
 
@@ -299,6 +342,8 @@ var _paddle = _interopRequireDefault(require("/src/paddle"));
 var _input = _interopRequireDefault(require("/src/input"));
 
 var _ball = _interopRequireDefault(require("/src/ball"));
+
+var _brick = _interopRequireDefault(require("/src/brick"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -323,7 +368,16 @@ function () {
     value: function start() {
       this.paddle = new _paddle.default(this);
       this.ball = new _ball.default(this);
-      this.gameObjects = [this.ball, this.paddle];
+      var bricks = [];
+
+      for (var i = 0; i < 14; i++) {
+        bricks.push(new _brick.default(this, {
+          x: 56 * i,
+          y: 32
+        }));
+      }
+
+      this.gameObjects = [this.ball, this.paddle].concat(bricks);
       new _input.default(this.paddle);
     }
   }, {
@@ -346,7 +400,7 @@ function () {
 }();
 
 exports.default = Game;
-},{"/src/paddle":"src/paddle.js","/src/input":"src/input.js","/src/ball":"src/ball.js"}],"src/index.js":[function(require,module,exports) {
+},{"/src/paddle":"src/paddle.js","/src/input":"src/input.js","/src/ball":"src/ball.js","/src/brick":"src/brick.js"}],"src/index.js":[function(require,module,exports) {
 "use strict";
 
 var _game = _interopRequireDefault(require("/src/game"));
