@@ -1,3 +1,5 @@
+import { detectCollision } from '/src/collisionDetection'
+
 export default class Brick{
     constructor(game, position){
         this.gameWidth = game.gameWidth;
@@ -23,6 +25,9 @@ export default class Brick{
         );
     }
 
-    update(deltaTime){        
+    update(deltaTime){       
+        if(detectCollision(this.game.ball, this)){
+            this.game.ball.speed.y = -this.game.ball.speed.y;
+        } 
     }
 }

@@ -318,6 +318,8 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
+var _collisionDetection = require("/src/collisionDetection");
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -346,14 +348,18 @@ function () {
     }
   }, {
     key: "update",
-    value: function update(deltaTime) {}
+    value: function update(deltaTime) {
+      if ((0, _collisionDetection.detectCollision)(this.game.ball, this)) {
+        this.game.ball.speed.y = -this.game.ball.speed.y;
+      }
+    }
   }]);
 
   return Brick;
 }();
 
 exports.default = Brick;
-},{}],"src/levels.js":[function(require,module,exports) {
+},{"/src/collisionDetection":"src/collisionDetection.js"}],"src/levels.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
