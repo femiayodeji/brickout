@@ -441,7 +441,8 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 var GAMESTATE = {
   PAUSED: 0,
   RUNNING: 1,
-  MENU: 2
+  MENU: 2,
+  GAMEOVER: 3
 };
 
 var Game =
@@ -454,6 +455,7 @@ function () {
     this.gameHeight = gameHeight;
     this.gameObjects = [];
     this.gameState = GAMESTATE.MENU;
+    this.lives = 1;
     this.paddle = new _paddle.default(this);
     this.ball = new _ball.default(this);
     new _input.default(this);
@@ -462,6 +464,7 @@ function () {
   _createClass(Game, [{
     key: "start",
     value: function start() {
+      if (this.lives === 0) this.gameState = GAMESTATE.GAMEOVER;
       if (this.gameState != GAMESTATE.MENU) return;
       var bricks = (0, _levels.buildLevel)(this, _levels.level1);
       this.gameObjects = [this.ball, this.paddle].concat(_toConsumableArray(bricks));
@@ -487,10 +490,10 @@ function () {
 
       if (this.gameState == GAMESTATE.PAUSED) {
         this.pausedScreen(context);
-      }
-
-      if (this.gameState == GAMESTATE.MENU) {
+      } else if (this.gameState == GAMESTATE.MENU) {
         this.menuScreen(context);
+      } else if (this.gameState == GAMESTATE.GAMEOVER) {
+        this.gameOverScreen(context);
       }
     }
   }, {
@@ -523,6 +526,17 @@ function () {
       context.fillStyle = "#ffffff";
       context.textAlign = "center";
       context.fillText("Press SPACE BAR to Start", this.gameWidth / 2, this.gameHeight / 2);
+    }
+  }, {
+    key: "gameOverScreen",
+    value: function gameOverScreen(context) {
+      context.rect(0, 0, this.gameWidth, this.gameHeight);
+      context.fillStyle = "rgba(255, 0, 0, 1)";
+      context.fill();
+      context.font = "30px Arial";
+      context.fillStyle = "#ffffff";
+      context.textAlign = "center";
+      context.fillText("GAME OVER", this.gameWidth / 2, this.gameHeight / 2);
     }
   }]);
 

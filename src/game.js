@@ -6,7 +6,8 @@ import { buildLevel, level1} from '/src/levels'
 const GAMESTATE = {
     PAUSED: 0,
     RUNNING: 1,
-    MENU: 2
+    MENU: 2,
+    GAMEOVER: 3
 }
 
 export default class Game{
@@ -15,6 +16,8 @@ export default class Game{
         this.gameHeight = gameHeight;
         this.gameObjects = [];
         this.gameState = GAMESTATE.MENU;
+
+        this.lives = 1;
         
         this.paddle = new Paddle(this);
         this.ball = new Ball(this);
@@ -23,6 +26,8 @@ export default class Game{
     }
 
     start(){
+        if(this.lives === 0) this.gameState = GAMESTATE.GAMEOVER;
+
         if(this.gameState != GAMESTATE.MENU) return;
 
         let bricks = buildLevel(this, level1);
@@ -51,9 +56,11 @@ export default class Game{
         if(this.gameState == GAMESTATE.PAUSED){
             this.pausedScreen(context);
         }
-
-        if(this.gameState == GAMESTATE.MENU){
+        else if(this.gameState == GAMESTATE.MENU){
             this.menuScreen(context);
+        }
+        else if(this.gameState == GAMESTATE.GAMEOVER){
+            this.gameOverScreen(context);
         }
     }
 
@@ -74,7 +81,11 @@ export default class Game{
         context.font = "30px Arial";
         context.fillStyle = "#ffffff";
         context.textAlign = "center";
-        context.fillText("Paused", this.gameWidth / 2, this.gameHeight / 2);
+        context.fillText(
+            "Paused", 
+            this.gameWidth / 2, 
+            this.gameHeight / 2
+        );
     }
 
     menuScreen(context){
@@ -85,6 +96,25 @@ export default class Game{
         context.font = "30px Arial";
         context.fillStyle = "#ffffff";
         context.textAlign = "center";
-        context.fillText("Press SPACE BAR to Start", this.gameWidth / 2, this.gameHeight / 2);
+        context.fillText(
+            "Press SPACE BAR to Start", 
+            this.gameWidth / 2, 
+            this.gameHeight / 2
+        );
+    }
+
+    gameOverScreen(context){
+        context.rect(0, 0, this.gameWidth, this.gameHeight);
+        context.fillStyle = "rgba(255, 0, 0, 1)";
+        context.fill();
+
+        context.font = "30px Arial";
+        context.fillStyle = "#ffffff";
+        context.textAlign = "center";
+        context.fillText(
+            "GAME OVER", 
+            this.gameWidth / 2, 
+            this.gameHeight / 2
+        );
     }
 }
