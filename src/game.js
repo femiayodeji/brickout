@@ -17,7 +17,7 @@ export default class Game{
         this.gameObjects = [];
         this.gameState = GAMESTATE.MENU;
 
-        this.lives = 1;
+        this.lives = 3;
         
         this.paddle = new Paddle(this);
         this.ball = new Ball(this);

@@ -274,18 +274,23 @@ function () {
     this.gameHeight = game.gameHeight;
     this.game = game;
     this.image = document.getElementById("img-ball");
-    this.position = {
-      x: 10,
-      y: 400
-    };
-    this.speed = {
-      x: 4,
-      y: -2
-    };
+    this.reset();
     this.size = 24;
   }
 
   _createClass(Ball, [{
+    key: "reset",
+    value: function reset() {
+      this.position = {
+        x: 10,
+        y: 400
+      };
+      this.speed = {
+        x: 4,
+        y: -2
+      };
+    }
+  }, {
     key: "draw",
     value: function draw(context) {
       context.drawImage(this.image, this.position.x, this.position.y, this.size, this.size);
@@ -306,6 +311,7 @@ function () {
 
       if (this.position.y + this.size > this.gameHeight) {
         this.game.lives--;
+        this.reset();
       }
 
       var ballBottom = this.position.y + this.size;
@@ -459,7 +465,7 @@ function () {
     this.gameHeight = gameHeight;
     this.gameObjects = [];
     this.gameState = GAMESTATE.MENU;
-    this.lives = 1;
+    this.lives = 3;
     this.paddle = new _paddle.default(this);
     this.ball = new _ball.default(this);
     new _input.default(this);

@@ -9,10 +9,14 @@ export default class Ball{
 
         this.image = document.getElementById("img-ball");
 
-        this.position = { x: 10, y: 400 };
-        this.speed = { x: 4, y: -2 };
+        this.reset();
 
         this.size = 24;
+    }
+
+    reset(){
+        this.position = { x: 10, y: 400 };
+        this.speed = { x: 4, y: -2 };
     }
 
     draw(context){
@@ -39,6 +43,7 @@ export default class Ball{
 
         if(this.position.y + this.size > this.gameHeight){
             this.game.lives--;
+            this.reset();
         }
 
         let ballBottom  = this.position.y + this.size;
