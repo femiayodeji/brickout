@@ -33,8 +33,12 @@ export default class Ball{
             this.speed.x = -this.speed.x;
         }
 
-        if(this.position.y + this.size > this.gameHeight || this.position.y < 0){
+        if(this.position.y < 0){
             this.speed.y = -this.speed.y;
+        }
+
+        if(this.position.y + this.size > this.gameHeight){
+            this.game.lives--;
         }
 
         let ballBottom  = this.position.y + this.size;

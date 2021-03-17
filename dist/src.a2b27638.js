@@ -300,8 +300,12 @@ function () {
         this.speed.x = -this.speed.x;
       }
 
-      if (this.position.y + this.size > this.gameHeight || this.position.y < 0) {
+      if (this.position.y < 0) {
         this.speed.y = -this.speed.y;
+      }
+
+      if (this.position.y + this.size > this.gameHeight) {
+        this.game.lives--;
       }
 
       var ballBottom = this.position.y + this.size;
@@ -464,7 +468,6 @@ function () {
   _createClass(Game, [{
     key: "start",
     value: function start() {
-      if (this.lives === 0) this.gameState = GAMESTATE.GAMEOVER;
       if (this.gameState != GAMESTATE.MENU) return;
       var bricks = (0, _levels.buildLevel)(this, _levels.level1);
       this.gameObjects = [this.ball, this.paddle].concat(_toConsumableArray(bricks));
@@ -473,6 +476,7 @@ function () {
   }, {
     key: "update",
     value: function update(deltaTime) {
+      if (this.lives === 0) this.gameState = GAMESTATE.GAMEOVER;
       if (this.gameState != GAMESTATE.RUNNING) return;
       this.gameObjects.forEach(function (object) {
         object.update(deltaTime);

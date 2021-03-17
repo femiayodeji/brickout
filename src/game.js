@@ -26,8 +26,6 @@ export default class Game{
     }
 
     start(){
-        if(this.lives === 0) this.gameState = GAMESTATE.GAMEOVER;
-
         if(this.gameState != GAMESTATE.MENU) return;
 
         let bricks = buildLevel(this, level1);
@@ -38,6 +36,8 @@ export default class Game{
     }
 
     update(deltaTime){
+        if(this.lives === 0) this.gameState = GAMESTATE.GAMEOVER;
+
         if(this.gameState != GAMESTATE.RUNNING) return;
 
         this.gameObjects.forEach((object) => {
