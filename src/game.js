@@ -7,7 +7,8 @@ const GAMESTATE = {
     PAUSED: 0,
     RUNNING: 1,
     MENU: 2,
-    GAMEOVER: 3
+    GAMEOVER: 3,
+    NEWLEVEL: 4,
 }
 
 export default class Game{
@@ -30,9 +31,13 @@ export default class Game{
     }
 
     start(){
-        if(this.gameState != GAMESTATE.MENU) return;
+        if(
+            this.gameState !== GAMESTATE.MENU && 
+            this.gameState !== GAMESTATE.NEWLEVEL
+        ) return;
 
         this.bricks = buildLevel(this, this.levels[this.currentLevel]);
+        this.ball.reset();
 
         this.gameObjects = [this.ball, this.paddle];
 
@@ -42,7 +47,7 @@ export default class Game{
     update(deltaTime){
         if(this.lives === 0) this.gameState = GAMESTATE.GAMEOVER;
 
-        if(this.gameState != GAMESTATE.RUNNING) return;
+        if(this.gameState !== GAMESTATE.RUNNING) return;
 
         [...this.gameObjects, ...this.bricks].forEach((object) => {
             object.update(deltaTime)
@@ -52,11 +57,8 @@ export default class Game{
 
         if(this.bricks.length === 0){
             this.currentLevel++;
-            this.bricks = buildLevel(this, this.levels[this.currentLevel]);
-
-            this.gameObjects = [this.ball, this.paddle];
-    
-            this.gameState = GAMESTATE.RUNNING;    
+            this.gameState = GAMESTATE.NEWLEVEL;    
+            this.start();
         }
 
     }

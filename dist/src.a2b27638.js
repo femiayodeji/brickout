@@ -458,7 +458,8 @@ var GAMESTATE = {
   PAUSED: 0,
   RUNNING: 1,
   MENU: 2,
-  GAMEOVER: 3
+  GAMEOVER: 3,
+  NEWLEVEL: 4
 };
 
 var Game =
@@ -483,8 +484,9 @@ function () {
   _createClass(Game, [{
     key: "start",
     value: function start() {
-      if (this.gameState != GAMESTATE.MENU) return;
+      if (this.gameState !== GAMESTATE.MENU && this.gameState !== GAMESTATE.NEWLEVEL) return;
       this.bricks = (0, _levels.buildLevel)(this, this.levels[this.currentLevel]);
+      this.ball.reset();
       this.gameObjects = [this.ball, this.paddle];
       this.gameState = GAMESTATE.RUNNING;
     }
@@ -492,7 +494,7 @@ function () {
     key: "update",
     value: function update(deltaTime) {
       if (this.lives === 0) this.gameState = GAMESTATE.GAMEOVER;
-      if (this.gameState != GAMESTATE.RUNNING) return;
+      if (this.gameState !== GAMESTATE.RUNNING) return;
       [].concat(_toConsumableArray(this.gameObjects), _toConsumableArray(this.bricks)).forEach(function (object) {
         object.update(deltaTime);
       });
@@ -502,9 +504,8 @@ function () {
 
       if (this.bricks.length === 0) {
         this.currentLevel++;
-        this.bricks = (0, _levels.buildLevel)(this, this.levels[this.currentLevel]);
-        this.gameObjects = [this.ball, this.paddle];
-        this.gameState = GAMESTATE.RUNNING;
+        this.gameState = GAMESTATE.NEWLEVEL;
+        this.start();
       }
     }
   }, {
