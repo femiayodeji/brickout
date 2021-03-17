@@ -214,6 +214,10 @@ var InputHandler = function InputHandler(game) {
       case 27:
         game.togglePause();
         break;
+
+      case 32:
+        game.start();
+        break;
     }
   });
   document.addEventListener("keyup", function (event) {
@@ -436,7 +440,8 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
 var GAMESTATE = {
   PAUSED: 0,
-  RUNNING: 1
+  RUNNING: 1,
+  MENU: 2
 };
 
 var Game =
@@ -447,17 +452,20 @@ function () {
 
     this.gameWidth = gameWidth;
     this.gameHeight = gameHeight;
+    this.gameObjects = [];
+    this.gameState = GAMESTATE.MENU;
+    this.paddle = new _paddle.default(this);
+    this.ball = new _ball.default(this);
+    new _input.default(this);
   }
 
   _createClass(Game, [{
     key: "start",
     value: function start() {
-      this.gameState = GAMESTATE.RUNNING;
-      this.paddle = new _paddle.default(this);
-      this.ball = new _ball.default(this);
+      if (this.gameState != GAMESTATE.MENU) return;
       var bricks = (0, _levels.buildLevel)(this, _levels.level1);
       this.gameObjects = [this.ball, this.paddle].concat(_toConsumableArray(bricks));
-      new _input.default(this);
+      this.gameState = GAMESTATE.RUNNING;
     }
   }, {
     key: "update",
@@ -480,6 +488,10 @@ function () {
       if (this.gameState == GAMESTATE.PAUSED) {
         this.pausedScreen(context);
       }
+
+      if (this.gameState == GAMESTATE.MENU) {
+        this.menuScreen(context);
+      }
     }
   }, {
     key: "togglePause",
@@ -501,6 +513,17 @@ function () {
       context.textAlign = "center";
       context.fillText("Paused", this.gameWidth / 2, this.gameHeight / 2);
     }
+  }, {
+    key: "menuScreen",
+    value: function menuScreen(context) {
+      context.rect(0, 0, this.gameWidth, this.gameHeight);
+      context.fillStyle = "rgba(0, 0, 0, 1)";
+      context.fill();
+      context.font = "30px Arial";
+      context.fillStyle = "#ffffff";
+      context.textAlign = "center";
+      context.fillText("Press SPACE BAR to Start", this.gameWidth / 2, this.gameHeight / 2);
+    }
   }]);
 
   return Game;
@@ -519,7 +542,6 @@ var context = canvas.getContext("2d");
 var GAME_WIDTH = 800;
 var GAME_HEIGHT = 600;
 var game = new _game.default(GAME_WIDTH, GAME_HEIGHT);
-game.start();
 var lastTime = 0;
 
 function gameLoop(timestamp) {
@@ -560,7 +582,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "3295" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "1803" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

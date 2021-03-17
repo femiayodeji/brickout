@@ -5,25 +5,31 @@ import { buildLevel, level1} from '/src/levels'
 
 const GAMESTATE = {
     PAUSED: 0,
-    RUNNING: 1
+    RUNNING: 1,
+    MENU: 2
 }
 
 export default class Game{
     constructor(gameWidth, gameHeight){
         this.gameWidth = gameWidth;
         this.gameHeight = gameHeight;
+        this.gameObjects = [];
+        this.gameState = GAMESTATE.MENU;
+        
+        this.paddle = new Paddle(this);
+        this.ball = new Ball(this);
+
+        new InputHandler(this);        
     }
 
     start(){
-        this.gameState = GAMESTATE.RUNNING;
-        this.paddle = new Paddle(this);
-        this.ball = new Ball(this);
+        if(this.gameState != GAMESTATE.MENU) return;
 
         let bricks = buildLevel(this, level1);
 
         this.gameObjects = [this.ball, this.paddle, ...bricks];
 
-        new InputHandler(this);        
+        this.gameState = GAMESTATE.RUNNING;
     }
 
     update(deltaTime){
@@ -45,6 +51,10 @@ export default class Game{
         if(this.gameState == GAMESTATE.PAUSED){
             this.pausedScreen(context);
         }
+
+        if(this.gameState == GAMESTATE.MENU){
+            this.menuScreen(context);
+        }
     }
 
     togglePause(){
@@ -65,5 +75,16 @@ export default class Game{
         context.fillStyle = "#ffffff";
         context.textAlign = "center";
         context.fillText("Paused", this.gameWidth / 2, this.gameHeight / 2);
+    }
+
+    menuScreen(context){
+        context.rect(0, 0, this.gameWidth, this.gameHeight);
+        context.fillStyle = "rgba(0, 0, 0, 1)";
+        context.fill();
+
+        context.font = "30px Arial";
+        context.fillStyle = "#ffffff";
+        context.textAlign = "center";
+        context.fillText("Press SPACE BAR to Start", this.gameWidth / 2, this.gameHeight / 2);
     }
 }
