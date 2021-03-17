@@ -388,7 +388,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.buildLevel = buildLevel;
-exports.level1 = void 0;
+exports.level2 = exports.level1 = void 0;
 
 var _brick = _interopRequireDefault(require("/src/brick"));
 
@@ -414,8 +414,10 @@ var level1 = [// [1, 1, 0, 0, 0, 1, 0, 1, 1, 0, 1, 0, 0, 0, 1, 1],
 // [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
 // [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
 // [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-[1]];
+[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1]];
 exports.level1 = level1;
+var level2 = [[1, 1, 0, 0, 0, 1, 0, 1, 1, 0, 1, 0, 0, 0, 1, 1]];
+exports.level2 = level2;
 },{"/src/brick":"src/brick.js"}],"src/game.js":[function(require,module,exports) {
 "use strict";
 
@@ -473,6 +475,8 @@ function () {
     this.bricks = [];
     this.paddle = new _paddle.default(this);
     this.ball = new _ball.default(this);
+    this.levels = [_levels.level1, _levels.level2];
+    this.currentLevel = 0;
     new _input.default(this);
   }
 
@@ -480,7 +484,7 @@ function () {
     key: "start",
     value: function start() {
       if (this.gameState != GAMESTATE.MENU) return;
-      this.bricks = (0, _levels.buildLevel)(this, _levels.level1);
+      this.bricks = (0, _levels.buildLevel)(this, this.levels[this.currentLevel]);
       this.gameObjects = [this.ball, this.paddle];
       this.gameState = GAMESTATE.RUNNING;
     }
@@ -495,6 +499,13 @@ function () {
       this.bricks = this.bricks.filter(function (brick) {
         return !brick.destroy;
       });
+
+      if (this.bricks.length === 0) {
+        this.currentLevel++;
+        this.bricks = (0, _levels.buildLevel)(this, this.levels[this.currentLevel]);
+        this.gameObjects = [this.ball, this.paddle];
+        this.gameState = GAMESTATE.RUNNING;
+      }
     }
   }, {
     key: "draw",
@@ -509,8 +520,6 @@ function () {
         this.menuScreen(context);
       } else if (this.gameState == GAMESTATE.GAMEOVER) {
         this.gameOverScreen(context);
-      } else if (this.bricks.length === 0) {
-        this.victoryScreen(context);
       }
     }
   }, {
