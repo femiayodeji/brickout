@@ -410,7 +410,11 @@ function buildLevel(game, level) {
   return bricks;
 }
 
-var level1 = [[1, 1, 0, 0, 0, 1, 0, 1, 1, 0, 1, 0, 0, 0, 1, 1], [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]];
+var level1 = [// [1, 1, 0, 0, 0, 1, 0, 1, 1, 0, 1, 0, 0, 0, 1, 1],
+// [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+// [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+// [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+[1]];
 exports.level1 = level1;
 },{"/src/brick":"src/brick.js"}],"src/game.js":[function(require,module,exports) {
 "use strict";
@@ -466,6 +470,7 @@ function () {
     this.gameObjects = [];
     this.gameState = GAMESTATE.MENU;
     this.lives = 3;
+    this.bricks = [];
     this.paddle = new _paddle.default(this);
     this.ball = new _ball.default(this);
     new _input.default(this);
@@ -475,8 +480,8 @@ function () {
     key: "start",
     value: function start() {
       if (this.gameState != GAMESTATE.MENU) return;
-      var bricks = (0, _levels.buildLevel)(this, _levels.level1);
-      this.gameObjects = [this.ball, this.paddle].concat(_toConsumableArray(bricks));
+      this.bricks = (0, _levels.buildLevel)(this, _levels.level1);
+      this.gameObjects = [this.ball, this.paddle];
       this.gameState = GAMESTATE.RUNNING;
     }
   }, {
@@ -484,17 +489,17 @@ function () {
     value: function update(deltaTime) {
       if (this.lives === 0) this.gameState = GAMESTATE.GAMEOVER;
       if (this.gameState != GAMESTATE.RUNNING) return;
-      this.gameObjects.forEach(function (object) {
+      [].concat(_toConsumableArray(this.gameObjects), _toConsumableArray(this.bricks)).forEach(function (object) {
         object.update(deltaTime);
       });
-      this.gameObjects = this.gameObjects.filter(function (object) {
-        return !object.destroy;
+      this.bricks = this.bricks.filter(function (brick) {
+        return !brick.destroy;
       });
     }
   }, {
     key: "draw",
     value: function draw(context) {
-      this.gameObjects.forEach(function (object) {
+      [].concat(_toConsumableArray(this.gameObjects), _toConsumableArray(this.bricks)).forEach(function (object) {
         object.draw(context);
       });
 
@@ -504,6 +509,8 @@ function () {
         this.menuScreen(context);
       } else if (this.gameState == GAMESTATE.GAMEOVER) {
         this.gameOverScreen(context);
+      } else if (this.bricks.length === 0) {
+        this.victoryScreen(context);
       }
     }
   }, {
@@ -547,6 +554,17 @@ function () {
       context.fillStyle = "#ffffff";
       context.textAlign = "center";
       context.fillText("GAME OVER", this.gameWidth / 2, this.gameHeight / 2);
+    }
+  }, {
+    key: "victoryScreen",
+    value: function victoryScreen(context) {
+      context.rect(0, 0, this.gameWidth, this.gameHeight);
+      context.fillStyle = "rgba(0, 255, 0, 0.5)";
+      context.fill();
+      context.font = "30px Arial";
+      context.fillStyle = "#ffffff";
+      context.textAlign = "center";
+      context.fillText("LEVEL CLEARED", this.gameWidth / 2, this.gameHeight / 2);
     }
   }]);
 

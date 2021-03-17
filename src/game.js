@@ -19,6 +19,7 @@ export default class Game{
 
         this.lives = 3;
         
+        this.bricks = [];
         this.paddle = new Paddle(this);
         this.ball = new Ball(this);
 
@@ -28,9 +29,9 @@ export default class Game{
     start(){
         if(this.gameState != GAMESTATE.MENU) return;
 
-        let bricks = buildLevel(this, level1);
+        this.bricks = buildLevel(this, level1);
 
-        this.gameObjects = [this.ball, this.paddle, ...bricks];
+        this.gameObjects = [this.ball, this.paddle];
 
         this.gameState = GAMESTATE.RUNNING;
     }
@@ -40,16 +41,15 @@ export default class Game{
 
         if(this.gameState != GAMESTATE.RUNNING) return;
 
-        this.gameObjects.forEach((object) => {
+        [...this.gameObjects, ...this.bricks].forEach((object) => {
             object.update(deltaTime)
         });
 
-        this.gameObjects = this.gameObjects.filter(object => !object.destroy);
-
+        this.bricks = this.bricks.filter(brick => !brick.destroy);
     }
 
     draw(context){
-        this.gameObjects.forEach((object) => {
+        [...this.gameObjects, ...this.bricks].forEach((object) => {
             object.draw(context)
         });
 
@@ -61,6 +61,9 @@ export default class Game{
         }
         else if(this.gameState == GAMESTATE.GAMEOVER){
             this.gameOverScreen(context);
+        }
+        else if(this.bricks.length === 0){
+            this.victoryScreen(context);
         }
     }
 
@@ -113,6 +116,21 @@ export default class Game{
         context.textAlign = "center";
         context.fillText(
             "GAME OVER", 
+            this.gameWidth / 2, 
+            this.gameHeight / 2
+        );
+    }
+
+    victoryScreen(context){
+        context.rect(0, 0, this.gameWidth, this.gameHeight);
+        context.fillStyle = "rgba(0, 255, 0, 0.5)";
+        context.fill();
+
+        context.font = "30px Arial";
+        context.fillStyle = "#ffffff";
+        context.textAlign = "center";
+        context.fillText(
+            "LEVEL CLEARED", 
             this.gameWidth / 2, 
             this.gameHeight / 2
         );
