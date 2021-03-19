@@ -557,10 +557,11 @@ function () {
       [].concat(_toConsumableArray(this.gameObjects), _toConsumableArray(this.bricks)).forEach(function (object) {
         object.draw(context);
       });
+      this.levelPanel(context);
 
       for (var i = 0; i < this.lives; i++) {
         var heart = new _heart.default(this, {
-          x: 10 + 20 * i,
+          x: 770 - 20 * i,
           y: 10
         });
         heart.draw(context);
@@ -626,6 +627,14 @@ function () {
       context.fillStyle = "#ffffff";
       context.textAlign = "center";
       context.fillText("LEVEL CLEARED", this.gameWidth / 2, this.gameHeight / 2);
+    }
+  }, {
+    key: "levelPanel",
+    value: function levelPanel(context) {
+      context.font = "16px Arial";
+      context.fillStyle = "rgb(0, 0, 255)";
+      context.textAlign = "center";
+      context.fillText("Level ".concat(this.currentLevel + 1), 32, 28);
     }
   }]);
 

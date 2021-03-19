@@ -71,8 +71,10 @@ export default class Game{
             object.draw(context)
         });
 
+        this.levelPanel(context);
+
         for(let i = 0; i < this.lives; i++){
-            let heart = new Heart(this, {x: 10 + 20 * i, y: 10 })
+            let heart = new Heart(this, {x: 770 - 20 * i, y: 10 })
             heart.draw(context);
         }
 
@@ -153,6 +155,17 @@ export default class Game{
             "LEVEL CLEARED", 
             this.gameWidth / 2, 
             this.gameHeight / 2
+        );
+    }
+
+    levelPanel(context){
+        context.font = "16px Arial";
+        context.fillStyle = "rgb(0, 0, 255)";
+        context.textAlign = "center";
+        context.fillText(
+            `Level ${this.currentLevel + 1}`, 
+            32,
+            28
         );
     }
 }
