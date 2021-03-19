@@ -317,7 +317,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 var Heart =
 /*#__PURE__*/
 function () {
-  function Heart(game) {
+  function Heart(game, position) {
     _classCallCheck(this, Heart);
 
     this.gameWidth = game.gameWidth;
@@ -325,6 +325,7 @@ function () {
     this.game = game;
     this.image = document.getElementById("img-heart");
     this.size = 24;
+    this.position = position;
   }
 
   _createClass(Heart, [{
@@ -517,7 +518,6 @@ function () {
     this.bricks = [];
     this.ball = new _ball.default(this);
     this.paddle = new _paddle.default(this);
-    this.heart = new _heart.default(this);
     this.levels = [_levels.level1, _levels.level2];
     this.currentLevel = 0;
     new _input.default(this);
@@ -557,6 +557,14 @@ function () {
       [].concat(_toConsumableArray(this.gameObjects), _toConsumableArray(this.bricks)).forEach(function (object) {
         object.draw(context);
       });
+
+      for (var i = 0; i < this.lives; i++) {
+        var heart = new _heart.default(this, {
+          x: 10 + 20 * i,
+          y: 10
+        });
+        heart.draw(context);
+      }
 
       if (this.gameState == GAMESTATE.PAUSED) {
         this.pausedScreen(context);

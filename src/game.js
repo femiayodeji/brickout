@@ -24,7 +24,6 @@ export default class Game{
         this.bricks = [];
         this.ball = new Ball(this);
         this.paddle = new Paddle(this);
-        this.heart = new Heart(this);
 
         this.levels = [level1, level2];
         this.currentLevel = 0;
@@ -71,6 +70,11 @@ export default class Game{
         [...this.gameObjects, ...this.bricks].forEach((object) => {
             object.draw(context)
         });
+
+        for(let i = 0; i < this.lives; i++){
+            let heart = new Heart(this, {x: 10 + 20 * i, y: 10 })
+            heart.draw(context);
+        }
 
         if(this.gameState == GAMESTATE.PAUSED){
             this.pausedScreen(context);
