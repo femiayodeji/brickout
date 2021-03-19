@@ -456,7 +456,7 @@ function buildLevel(game, level) {
 
 var level1 = [[1, 1, 0, 0, 0, 1, 0, 1, 1, 0, 1, 0, 0, 0, 1, 1], [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]];
 exports.level1 = level1;
-var level2 = [[1, 1, 0, 0, 0, 1, 0, 1, 1, 0, 1, 0, 0, 0, 1, 1]];
+var level2 = [[1, 1, 0, 0, 0, 1, 0, 1, 1, 0, 1, 0, 0, 0, 1, 1], [0, 0, 1, 1, 1, 0, 1, 0, 0, 1, 0, 1, 1, 1, 0, 0], [1, 1, 0, 0, 0, 1, 0, 1, 1, 0, 1, 0, 0, 0, 1, 1], [0, 0, 1, 1, 1, 0, 1, 0, 0, 1, 0, 1, 1, 1, 0, 0]];
 exports.level2 = level2;
 },{"/src/brick":"src/brick.js"}],"src/game.js":[function(require,module,exports) {
 "use strict";
@@ -520,8 +520,7 @@ function () {
     this.paddle = new _paddle.default(this);
     this.levels = [_levels.level1, _levels.level2];
     this.currentLevel = 0;
-    new _input.default(this);
-    this.start();
+    new _input.default(this); // this.start();
   }
 
   _createClass(Game, [{

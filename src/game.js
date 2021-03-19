@@ -30,7 +30,7 @@ export default class Game{
 
         new InputHandler(this);        
 
-        this.start();
+        // this.start();
     }
 
     start(){
