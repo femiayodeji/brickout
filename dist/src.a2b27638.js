@@ -117,116 +117,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
   }
 
   return newRequire;
-})({"src/paddle.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-var Paddle =
-/*#__PURE__*/
-function () {
-  function Paddle(game) {
-    _classCallCheck(this, Paddle);
-
-    this.gameWidth = game.gameWidth;
-    this.gameHeight = game.gameHeight;
-    this.width = 150;
-    this.height = 20;
-    this.maxSpeed = 7;
-    this.speed = 0;
-    this.position = {
-      x: this.gameWidth / 2 - this.width / 2,
-      y: this.gameHeight - this.height - 10
-    };
-  }
-
-  _createClass(Paddle, [{
-    key: "draw",
-    value: function draw(context) {
-      context.fillStyle = "#0f0";
-      context.fillRect(this.position.x, this.position.y, this.width, this.height);
-    }
-  }, {
-    key: "update",
-    value: function update(deltaTime) {
-      this.position.x += this.speed;
-      if (this.position.x < 0) this.position.x = 0;
-      if (this.position.x + this.width > this.gameWidth) this.position.x = this.gameWidth - this.width;
-    }
-  }, {
-    key: "move",
-    value: function move(keyCode) {
-      switch (keyCode) {
-        case 37:
-          this.speed = -this.maxSpeed;
-          break;
-
-        case 39:
-          this.speed = this.maxSpeed;
-          break;
-      }
-    }
-  }, {
-    key: "stop",
-    value: function stop(keyCode) {
-      switch (keyCode) {
-        case 37:
-          if (this.speed < 0) this.speed = 0;
-          break;
-
-        case 39:
-          if (this.speed > 0) this.speed = 0;
-          break;
-      }
-    }
-  }]);
-
-  return Paddle;
-}();
-
-exports.default = Paddle;
-},{}],"src/input.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var InputHandler = function InputHandler(game) {
-  _classCallCheck(this, InputHandler);
-
-  document.addEventListener("keydown", function (event) {
-    game.paddle.move(event.keyCode);
-
-    switch (event.keyCode) {
-      case 27:
-        game.togglePause();
-        break;
-
-      case 32:
-        game.start();
-        break;
-    }
-  });
-  document.addEventListener("keyup", function (event) {
-    game.paddle.stop(event.keyCode);
-  });
-};
-
-exports.default = InputHandler;
-},{}],"src/collisionDetection.js":[function(require,module,exports) {
+})({"src/collisionDetection.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -330,7 +221,159 @@ function () {
 }();
 
 exports.default = Ball;
-},{"/src/collisionDetection":"src/collisionDetection.js"}],"src/brick.js":[function(require,module,exports) {
+},{"/src/collisionDetection":"src/collisionDetection.js"}],"src/paddle.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var Paddle =
+/*#__PURE__*/
+function () {
+  function Paddle(game) {
+    _classCallCheck(this, Paddle);
+
+    this.gameWidth = game.gameWidth;
+    this.gameHeight = game.gameHeight;
+    this.width = 150;
+    this.height = 20;
+    this.maxSpeed = 7;
+    this.speed = 0;
+    this.position = {
+      x: this.gameWidth / 2 - this.width / 2,
+      y: this.gameHeight - this.height - 10
+    };
+  }
+
+  _createClass(Paddle, [{
+    key: "draw",
+    value: function draw(context) {
+      context.fillStyle = "#0f0";
+      context.fillRect(this.position.x, this.position.y, this.width, this.height);
+    }
+  }, {
+    key: "update",
+    value: function update(deltaTime) {
+      this.position.x += this.speed;
+      if (this.position.x < 0) this.position.x = 0;
+      if (this.position.x + this.width > this.gameWidth) this.position.x = this.gameWidth - this.width;
+    }
+  }, {
+    key: "move",
+    value: function move(keyCode) {
+      switch (keyCode) {
+        case 37:
+          this.speed = -this.maxSpeed;
+          break;
+
+        case 39:
+          this.speed = this.maxSpeed;
+          break;
+      }
+    }
+  }, {
+    key: "stop",
+    value: function stop(keyCode) {
+      switch (keyCode) {
+        case 37:
+          if (this.speed < 0) this.speed = 0;
+          break;
+
+        case 39:
+          if (this.speed > 0) this.speed = 0;
+          break;
+      }
+    }
+  }]);
+
+  return Paddle;
+}();
+
+exports.default = Paddle;
+},{}],"src/heart.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _collisionDetection = require("/src/collisionDetection");
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var Heart =
+/*#__PURE__*/
+function () {
+  function Heart(game) {
+    _classCallCheck(this, Heart);
+
+    this.gameWidth = game.gameWidth;
+    this.gameHeight = game.gameHeight;
+    this.game = game;
+    this.image = document.getElementById("img-heart");
+    this.size = 24;
+  }
+
+  _createClass(Heart, [{
+    key: "draw",
+    value: function draw(context) {
+      context.drawImage(this.image, this.position.x, this.position.y, this.size, this.size);
+    }
+  }, {
+    key: "update",
+    value: function update(deltaTime) {}
+  }]);
+
+  return Heart;
+}();
+
+exports.default = Heart;
+},{"/src/collisionDetection":"src/collisionDetection.js"}],"src/input.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var InputHandler = function InputHandler(game) {
+  _classCallCheck(this, InputHandler);
+
+  document.addEventListener("keydown", function (event) {
+    game.paddle.move(event.keyCode);
+
+    switch (event.keyCode) {
+      case 27:
+        game.togglePause();
+        break;
+
+      case 32:
+        game.start();
+        break;
+    }
+  });
+  document.addEventListener("keyup", function (event) {
+    game.paddle.stop(event.keyCode);
+  });
+};
+
+exports.default = InputHandler;
+},{}],"src/brick.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -422,11 +465,13 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
+var _ball = _interopRequireDefault(require("/src/ball"));
+
 var _paddle = _interopRequireDefault(require("/src/paddle"));
 
-var _input = _interopRequireDefault(require("/src/input"));
+var _heart = _interopRequireDefault(require("/src/heart"));
 
-var _ball = _interopRequireDefault(require("/src/ball"));
+var _input = _interopRequireDefault(require("/src/input"));
 
 var _levels = require("/src/levels");
 
@@ -470,11 +515,13 @@ function () {
     this.gameState = GAMESTATE.MENU;
     this.lives = 3;
     this.bricks = [];
-    this.paddle = new _paddle.default(this);
     this.ball = new _ball.default(this);
+    this.paddle = new _paddle.default(this);
+    this.heart = new _heart.default(this);
     this.levels = [_levels.level1, _levels.level2];
     this.currentLevel = 0;
     new _input.default(this);
+    this.start();
   }
 
   _createClass(Game, [{
@@ -578,7 +625,7 @@ function () {
 }();
 
 exports.default = Game;
-},{"/src/paddle":"src/paddle.js","/src/input":"src/input.js","/src/ball":"src/ball.js","/src/levels":"src/levels.js"}],"src/index.js":[function(require,module,exports) {
+},{"/src/ball":"src/ball.js","/src/paddle":"src/paddle.js","/src/heart":"src/heart.js","/src/input":"src/input.js","/src/levels":"src/levels.js"}],"src/index.js":[function(require,module,exports) {
 "use strict";
 
 var _game = _interopRequireDefault(require("/src/game"));
