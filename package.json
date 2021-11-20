@@ -2,9 +2,10 @@
   "name": "brickout",
   "version": "1.0.0",
   "description": "A web game build with JavaScript, HTML5 and CSS.",
-  "main": "src/index.js",
+  "main": "index.html",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "parcel build index.html"
     "dev": "parcel index.html"
   },
   "keywords": [],
@@ -14,6 +15,5 @@
     "parcel": "^1.12.3"
   },
   "dependencies": {
-    "src": "^1.1.2"
   }
 }
