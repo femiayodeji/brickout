@@ -12,8 +12,7 @@
   "author": "Femi Ayodeji <femidotayodeji@gmail.com>",
   "license": "MIT",
   "devDependencies": {
-    "parcel": "^1.12.3"
+    "parcel": "1.12.3"
   },
-  "dependencies": {
-  }
+  "dependencies": {}
 }

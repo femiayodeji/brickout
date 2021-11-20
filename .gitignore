@@ -145,3 +145,6 @@ tools/*/*.i.tmp
 __pycache__
 .DS_Store
 *~
+
+# custom rules 
+/dist
